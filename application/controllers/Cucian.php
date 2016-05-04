@@ -22,6 +22,16 @@ class Cucian extends CI_Controller
 
         $this->load->view('tbcucian_list', $data);
     }
+    
+    public function json(){
+        $cucian = $this->Cucian_model->get_all();
+
+        $data = array(
+            'cucian_data' => $cucian
+        );
+
+        $this->load->view('tbcucian_json', $data);        
+    }
 
     public function read($id) 
     {

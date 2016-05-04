@@ -42,6 +42,36 @@ class Kurir extends CI_Controller
         );
         $this->load->view('tbkurir_list', $data);
     }
+    public function json()
+    {
+        $q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->input->get('start'));
+        
+        if ($q <> '') {
+            $config['base_url'] = base_url() . 'kurir/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'kurir/index.html?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'kurir/index.html';
+            $config['first_url'] = base_url() . 'kurir/index.html';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = TRUE;
+        $config['total_rows'] = $this->Kurir_model->total_rows($q);
+        $kurir = $this->Kurir_model->get_limit_data($config['per_page'], $start, $q);
+
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+
+        $data = array(
+            'kurir_data' => $kurir,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
+        );
+        $this->load->view('tbkurir_json', $data);
+    }
 
     public function read($id) 
     {

@@ -22,6 +22,16 @@ class Pelanggan extends CI_Controller
 
         $this->load->view('tbpelanggan_list', $data);
     }
+    public function json()
+    {
+        $pelanggan = $this->Pelanggan_model->get_all();
+
+        $data = array(
+            'pelanggan_data' => $pelanggan
+        );
+
+        $this->load->view('tbpelanggan_json', $data);
+    }
 
     public function read($id) 
     {
