@@ -7,6 +7,8 @@ if (!defined('BASEPATH'))
 
 class " . $c . " extends CI_Controller
 {
+    
+        
     function __construct()
     {
         parent::__construct();
@@ -44,7 +46,7 @@ $string .= "\n\n    public function index()
             'total_rows' => \$config['total_rows'],
             'start' => \$start,
         );
-        \$this->load->view('$v_list', \$data);
+        \$this->template->load('template','$v_list', \$data);
     }";
 
 } else {
@@ -57,7 +59,7 @@ $string .="\n\n    public function index()
             '" . $c_url . "_data' => \$$c_url
         );
 
-        \$this->load->view('$v_list', \$data);
+        \$this->template->load('template','$v_list', \$data);
     }";
 
 }
@@ -71,7 +73,7 @@ foreach ($all as $row) {
     $string .= "\n\t\t'" . $row['column_name'] . "' => \$row->" . $row['column_name'] . ",";
 }
 $string .= "\n\t    );
-            \$this->load->view('$v_read', \$data);
+            \$this->template->load('template','$v_read', \$data);
         } else {
             \$this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('$c_url'));
@@ -87,7 +89,7 @@ foreach ($all as $row) {
     $string .= "\n\t    '" . $row['column_name'] . "' => set_value('" . $row['column_name'] . "'),";
 }
 $string .= "\n\t);
-        \$this->load->view('$v_form', \$data);
+        \$this->template->load('template','$v_form', \$data);
     }
     
     public function create_action() 
@@ -121,7 +123,7 @@ foreach ($all as $row) {
     $string .= "\n\t\t'" . $row['column_name'] . "' => set_value('" . $row['column_name'] . "', \$row->". $row['column_name']."),";
 }
 $string .= "\n\t    );
-            \$this->load->view('$v_form', \$data);
+            \$this->template->load('template','$v_form', \$data);
         } else {
             \$this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('$c_url'));
