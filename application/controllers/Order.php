@@ -5,8 +5,6 @@ if (!defined('BASEPATH'))
 
 class Order extends CI_Controller
 {
-    
-        
     function __construct()
     {
         parent::__construct();
@@ -16,50 +14,70 @@ class Order extends CI_Controller
 
     public function index()
     {
-        $order = $this->Order_model->get_all();
+        $q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->input->get('start'));
+
+        if ($q <> '') {
+            $config['base_url'] = base_url() . 'order/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'order/index.html?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'order/index.html';
+            $config['first_url'] = base_url() . 'order/index.html';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = TRUE;
+        $config['total_rows'] = $this->Order_model->total_rows($q);
+        $order = $this->Order_model->get_limit_data($config['per_page'], $start, $q);
+
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
 
         $data = array(
-            'order_data' => $order
+            'order_data' => $order,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
         );
-
-        $this->template->load('template','tbOrder_list', $data);
+        $this->template->load('template','order/order_list', $data);
     }
 
-    public function read($id) 
+    public function read($id)
     {
         $row = $this->Order_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'idOrder' => $row->idOrder,
-		'idUser' => $row->idUser,
-		'beratOrder' => $row->beratOrder,
-		'hargaOrder' => $row->hargaOrder,
-		'notifOrder' => $row->notifOrder,
-		'keteranganOrder' => $row->keteranganOrder,
+		'id_order' => $row->id_order,
+		'id_user' => $row->id_user,
+		'berat_order' => $row->berat_order,
+		'harga_order' => $row->harga_order,
+		'notif_order' => $row->notif_order,
+		'keterangan_order' => $row->keterangan_order,
 	    );
-            $this->template->load('template','tbOrder_read', $data);
+            $this->template->load('template','order/order_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('order'));
         }
     }
 
-    public function create() 
+    public function create()
     {
         $data = array(
             'button' => 'Create',
             'action' => site_url('order/create_action'),
-	    'idOrder' => set_value('idOrder'),
-	    'idUser' => set_value('idUser'),
-	    'beratOrder' => set_value('beratOrder'),
-	    'hargaOrder' => set_value('hargaOrder'),
-	    'notifOrder' => set_value('notifOrder'),
-	    'keteranganOrder' => set_value('keteranganOrder'),
+	    'id_order' => set_value('id_order'),
+	    'id_user' => set_value('id_user'),
+	    'berat_order' => set_value('berat_order'),
+	    'harga_order' => set_value('harga_order'),
+	    'notif_order' => set_value('notif_order'),
+	    'keterangan_order' => set_value('keterangan_order'),
 	);
-        $this->template->load('template','tbOrder_form', $data);
+        $this->template->load('template','order/order_form', $data);
     }
-    
-    public function create_action() 
+
+    public function create_action()
     {
         $this->_rules();
 
@@ -67,11 +85,11 @@ class Order extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'idUser' => $this->input->post('idUser',TRUE),
-		'beratOrder' => $this->input->post('beratOrder',TRUE),
-		'hargaOrder' => $this->input->post('hargaOrder',TRUE),
-		'notifOrder' => $this->input->post('notifOrder',TRUE),
-		'keteranganOrder' => $this->input->post('keteranganOrder',TRUE),
+		'id_user' => $this->input->post('id_user',TRUE),
+		'berat_order' => $this->input->post('berat_order',TRUE),
+		'harga_order' => $this->input->post('harga_order',TRUE),
+		'notif_order' => $this->input->post('notif_order',TRUE),
+		'keterangan_order' => $this->input->post('keterangan_order',TRUE),
 	    );
 
             $this->Order_model->insert($data);
@@ -79,8 +97,8 @@ class Order extends CI_Controller
             redirect(site_url('order'));
         }
     }
-    
-    public function update($id) 
+
+    public function update($id)
     {
         $row = $this->Order_model->get_by_id($id);
 
@@ -88,42 +106,42 @@ class Order extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('order/update_action'),
-		'idOrder' => set_value('idOrder', $row->idOrder),
-		'idUser' => set_value('idUser', $row->idUser),
-		'beratOrder' => set_value('beratOrder', $row->beratOrder),
-		'hargaOrder' => set_value('hargaOrder', $row->hargaOrder),
-		'notifOrder' => set_value('notifOrder', $row->notifOrder),
-		'keteranganOrder' => set_value('keteranganOrder', $row->keteranganOrder),
+		'id_order' => set_value('id_order', $row->id_order),
+		'id_user' => set_value('id_user', $row->id_user),
+		'berat_order' => set_value('berat_order', $row->berat_order),
+		'harga_order' => set_value('harga_order', $row->harga_order),
+		'notif_order' => set_value('notif_order', $row->notif_order),
+		'keterangan_order' => set_value('keterangan_order', $row->keterangan_order),
 	    );
-            $this->template->load('template','tbOrder_form', $data);
+            $this->template->load('template','order/order_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('order'));
         }
     }
-    
-    public function update_action() 
+
+    public function update_action()
     {
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('idOrder', TRUE));
+            $this->update($this->input->post('id_order', TRUE));
         } else {
             $data = array(
-		'idUser' => $this->input->post('idUser',TRUE),
-		'beratOrder' => $this->input->post('beratOrder',TRUE),
-		'hargaOrder' => $this->input->post('hargaOrder',TRUE),
-		'notifOrder' => $this->input->post('notifOrder',TRUE),
-		'keteranganOrder' => $this->input->post('keteranganOrder',TRUE),
+		'id_user' => $this->input->post('id_user',TRUE),
+		'berat_order' => $this->input->post('berat_order',TRUE),
+		'harga_order' => $this->input->post('harga_order',TRUE),
+		'notif_order' => $this->input->post('notif_order',TRUE),
+		'keterangan_order' => $this->input->post('keterangan_order',TRUE),
 	    );
 
-            $this->Order_model->update($this->input->post('idOrder', TRUE), $data);
+            $this->Order_model->update($this->input->post('id_order', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('order'));
         }
     }
-    
-    public function delete($id) 
+
+    public function delete($id)
     {
         $row = $this->Order_model->get_by_id($id);
 
@@ -137,63 +155,31 @@ class Order extends CI_Controller
         }
     }
 
-    public function _rules() 
+    public function _rules()
     {
-	$this->form_validation->set_rules('idUser', 'iduser', 'trim|required');
-	$this->form_validation->set_rules('beratOrder', 'beratorder', 'trim|required');
-	$this->form_validation->set_rules('hargaOrder', 'hargaorder', 'trim|required');
-	$this->form_validation->set_rules('notifOrder', 'notiforder', 'trim|required');
-	$this->form_validation->set_rules('keteranganOrder', 'keteranganorder', 'trim|required');
+	$this->form_validation->set_rules('id_user', 'id user', 'trim|required');
+	$this->form_validation->set_rules('berat_order', 'berat order', 'trim|required');
+	$this->form_validation->set_rules('harga_order', 'harga order', 'trim|required');
+	$this->form_validation->set_rules('notif_order', 'notif order', 'trim|required');
+	$this->form_validation->set_rules('keterangan_order', 'keterangan order', 'trim|required');
 
-	$this->form_validation->set_rules('idOrder', 'idOrder', 'trim');
+	$this->form_validation->set_rules('id_order', 'id_order', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
-    public function excel()
+    function pdf()
     {
-        $this->load->helper('exportexcel');
-        $namaFile = "tbOrder.xls";
-        $judul = "tbOrder";
-        $tablehead = 0;
-        $tablebody = 1;
-        $nourut = 1;
-        //penulisan header
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-        header("Content-Disposition: attachment;filename=" . $namaFile . "");
-        header("Content-Transfer-Encoding: binary ");
+        $data = array(
+            'order_data' => $this->Order_model->get_all(),
+            'start' => 0
+        );
 
-        xlsBOF();
-
-        $kolomhead = 0;
-        xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "IdUser");
-	xlsWriteLabel($tablehead, $kolomhead++, "BeratOrder");
-	xlsWriteLabel($tablehead, $kolomhead++, "HargaOrder");
-	xlsWriteLabel($tablehead, $kolomhead++, "NotifOrder");
-	xlsWriteLabel($tablehead, $kolomhead++, "KeteranganOrder");
-
-	foreach ($this->Order_model->get_all() as $data) {
-            $kolombody = 0;
-
-            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
-            xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->idUser);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->beratOrder);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->hargaOrder);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->notifOrder);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->keteranganOrder);
-
-	    $tablebody++;
-            $nourut++;
-        }
-
-        xlsEOF();
-        exit();
+        ini_set('memory_limit', '32M');
+        $html = $this->load->view('order/order_pdf', $data, true);
+        $this->load->library('pdf');
+        $pdf = $this->pdf->load();
+        $pdf->WriteHTML($html);
+        $pdf->Output('order.pdf', 'D');
     }
 
 }
@@ -201,5 +187,5 @@ class Order extends CI_Controller
 /* End of file Order.php */
 /* Location: ./application/controllers/Order.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2016-05-07 21:47:27 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2016-05-09 06:39:36 */
 /* http://harviacode.com */

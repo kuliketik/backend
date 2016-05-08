@@ -5,8 +5,6 @@ if (!defined('BASEPATH'))
 
 class Keterangan extends CI_Controller
 {
-    
-        
     function __construct()
     {
         parent::__construct();
@@ -18,7 +16,7 @@ class Keterangan extends CI_Controller
     {
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->input->get('start'));
-        
+
         if ($q <> '') {
             $config['base_url'] = base_url() . 'keterangan/index.html?q=' . urlencode($q);
             $config['first_url'] = base_url() . 'keterangan/index.html?q=' . urlencode($q);
@@ -42,38 +40,38 @@ class Keterangan extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $this->template->load('template','tbKeterangan_list', $data);
+        $this->template->load('template','keterangan/keterangan_list', $data);
     }
 
-    public function read($id) 
+    public function read($id)
     {
         $row = $this->Keterangan_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'idKeterangan' => $row->idKeterangan,
-		'idOrder' => $row->idOrder,
-		'idPakaian' => $row->idPakaian,
+		'id_keterangan' => $row->id_keterangan,
+		'id_order' => $row->id_order,
+		'id_pakaian' => $row->id_pakaian,
 	    );
-            $this->template->load('template','tbKeterangan_read', $data);
+            $this->template->load('template','keterangan/keterangan_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('keterangan'));
         }
     }
 
-    public function create() 
+    public function create()
     {
         $data = array(
             'button' => 'Create',
             'action' => site_url('keterangan/create_action'),
-	    'idKeterangan' => set_value('idKeterangan'),
-	    'idOrder' => set_value('idOrder'),
-	    'idPakaian' => set_value('idPakaian'),
+	    'id_keterangan' => set_value('id_keterangan'),
+	    'id_order' => set_value('id_order'),
+	    'id_pakaian' => set_value('id_pakaian'),
 	);
-        $this->template->load('template','tbKeterangan_form', $data);
+        $this->template->load('template','keterangan/keterangan_form', $data);
     }
-    
-    public function create_action() 
+
+    public function create_action()
     {
         $this->_rules();
 
@@ -81,8 +79,8 @@ class Keterangan extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'idOrder' => $this->input->post('idOrder',TRUE),
-		'idPakaian' => $this->input->post('idPakaian',TRUE),
+		'id_order' => $this->input->post('id_order',TRUE),
+		'id_pakaian' => $this->input->post('id_pakaian',TRUE),
 	    );
 
             $this->Keterangan_model->insert($data);
@@ -90,8 +88,8 @@ class Keterangan extends CI_Controller
             redirect(site_url('keterangan'));
         }
     }
-    
-    public function update($id) 
+
+    public function update($id)
     {
         $row = $this->Keterangan_model->get_by_id($id);
 
@@ -99,36 +97,36 @@ class Keterangan extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('keterangan/update_action'),
-		'idKeterangan' => set_value('idKeterangan', $row->idKeterangan),
-		'idOrder' => set_value('idOrder', $row->idOrder),
-		'idPakaian' => set_value('idPakaian', $row->idPakaian),
+		'id_keterangan' => set_value('id_keterangan', $row->id_keterangan),
+		'id_order' => set_value('id_order', $row->id_order),
+		'id_pakaian' => set_value('id_pakaian', $row->id_pakaian),
 	    );
-            $this->template->load('template','tbKeterangan_form', $data);
+            $this->template->load('template','keterangan/keterangan_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('keterangan'));
         }
     }
-    
-    public function update_action() 
+
+    public function update_action()
     {
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('idKeterangan', TRUE));
+            $this->update($this->input->post('id_keterangan', TRUE));
         } else {
             $data = array(
-		'idOrder' => $this->input->post('idOrder',TRUE),
-		'idPakaian' => $this->input->post('idPakaian',TRUE),
+		'id_order' => $this->input->post('id_order',TRUE),
+		'id_pakaian' => $this->input->post('id_pakaian',TRUE),
 	    );
 
-            $this->Keterangan_model->update($this->input->post('idKeterangan', TRUE), $data);
+            $this->Keterangan_model->update($this->input->post('id_keterangan', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('keterangan'));
         }
     }
-    
-    public function delete($id) 
+
+    public function delete($id)
     {
         $row = $this->Keterangan_model->get_by_id($id);
 
@@ -142,12 +140,12 @@ class Keterangan extends CI_Controller
         }
     }
 
-    public function _rules() 
+    public function _rules()
     {
-	$this->form_validation->set_rules('idOrder', 'idorder', 'trim|required');
-	$this->form_validation->set_rules('idPakaian', 'idpakaian', 'trim|required');
+	$this->form_validation->set_rules('id_order', 'id order', 'trim|required');
+	$this->form_validation->set_rules('id_pakaian', 'id pakaian', 'trim|required');
 
-	$this->form_validation->set_rules('idKeterangan', 'idKeterangan', 'trim');
+	$this->form_validation->set_rules('id_keterangan', 'id_keterangan', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
@@ -156,5 +154,5 @@ class Keterangan extends CI_Controller
 /* End of file Keterangan.php */
 /* Location: ./application/controllers/Keterangan.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2016-05-07 21:49:24 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2016-05-09 06:40:18 */
 /* http://harviacode.com */

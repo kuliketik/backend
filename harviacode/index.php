@@ -45,7 +45,7 @@ require_once 'core/process.php';
                                         <input type="radio" name="jenis_tabel" value="reguler_table" <?php echo $jenis_tabel == 'reguler_table' ? 'checked' : ''; ?>>
                                         Reguler Table
                                     </label>
-                                </div>                            
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
@@ -66,7 +66,7 @@ require_once 'core/process.php';
                                 Export Excel
                             </label>
                         </div>
-                    </div>    
+                    </div>
 
                     <div class="form-group">
                         <div class="checkbox">
@@ -76,20 +76,19 @@ require_once 'core/process.php';
                                 Export Word
                             </label>
                         </div>
-                    </div>    
+                    </div>
 
-                    <!--                    <div class="form-group">
-                                            <div class="checkbox  <?php // echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : 'disabled';   ?>">
-                    <?php // $export_pdf = isset($_POST['export_pdf']) ? $_POST['export_pdf'] : ''; ?>
+                    <div class="form-group">
+                                            <div class="checkbox  <?php echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : 'disabled';   ?>">
+                    <?php  $export_pdf = isset($_POST['export_pdf']) ? $_POST['export_pdf'] : ''; ?>
                                                 <label>
-                                                    <input type="checkbox" name="export_pdf" value="1" <?php // echo $export_pdf == '1' ? 'checked' : ''   ?>
-                    <?php // echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : 'disabled'; ?>>
+                                                    <input type="checkbox" name="export_pdf" value="1" <?php  echo $export_pdf == '1' ? 'checked' : ''   ?>
+                    <?php  echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : 'disabled'; ?>>
                                                     Export PDF
                                                 </label>
-                    <?php // echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : '<small class="text-danger">mpdf required, download <a href="http://harviacode.com">here</a></small>'; ?>
+                    <?php  echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : '<small class="text-danger">mpdf required, download <a href="http://harviacode.com">here</a></small>'; ?>
                                             </div>
-                                        </div>-->
-
+                                        </div>
 
                     <div class="form-group">
                         <label>Custom Controller Name</label>
@@ -117,7 +116,7 @@ require_once 'core/process.php';
                 <p><strong>About :</strong></p>
                 <p>
                     Codeigniter CRUD Generator is a simple tool to auto generate model, controller and view from your table. This tool will boost your
-                    writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form*, form validation, export to excel, and export to word. 
+                    writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form*, form validation, export to excel, and export to word.
                     This CRUD Generator using bootstrap 3 style. You still need to modify the result code for more customization.
                 </p>
                 <small>* generate textarea and text input only</small>

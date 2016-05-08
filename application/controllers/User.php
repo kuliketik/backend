@@ -5,8 +5,6 @@ if (!defined('BASEPATH'))
 
 class User extends CI_Controller
 {
-
-
     function __construct()
     {
         parent::__construct();
@@ -16,13 +14,33 @@ class User extends CI_Controller
 
     public function index()
     {
-        $user = $this->User_model->get_all();
+        $q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->input->get('start'));
+
+        if ($q <> '') {
+            $config['base_url'] = base_url() . 'user/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'user/index.html?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'user/index.html';
+            $config['first_url'] = base_url() . 'user/index.html';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = TRUE;
+        $config['total_rows'] = $this->User_model->total_rows($q);
+        $user = $this->User_model->get_limit_data($config['per_page'], $start, $q);
+
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
 
         $data = array(
-            'user_data' => $user
+            'user_data' => $user,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
         );
-
-        $this->template->load('template','tbUser_list', $data);
+        $this->template->load('template','user/user_list', $data);
     }
 
     public function read($id)
@@ -30,13 +48,13 @@ class User extends CI_Controller
         $row = $this->User_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'idUser' => $row->idUser,
-		'emailUser' => $row->emailUser,
-		'namaUser' => $row->namaUser,
-		'passwordUser' => $row->passwordUser,
-		'alamatUser' => $row->alamatUser,
+		'id_user' => $row->id_user,
+		'email_user' => $row->email_user,
+		'nama_user' => $row->nama_user,
+		'password_user' => $row->password_user,
+		'alamat_user' => $row->alamat_user,
 	    );
-            $this->template->load('template','tbUser_read', $data);
+            $this->template->load('template','user/user_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('user'));
@@ -48,13 +66,13 @@ class User extends CI_Controller
         $data = array(
             'button' => 'Create',
             'action' => site_url('user/create_action'),
-	    'idUser' => set_value('idUser'),
-	    'emailUser' => set_value('emailUser'),
-	    'namaUser' => set_value('namaUser'),
-	    'passwordUser' => set_value('passwordUser'),
-	    'alamatUser' => set_value('alamatUser'),
+	    'id_user' => set_value('id_user'),
+	    'email_user' => set_value('email_user'),
+	    'nama_user' => set_value('nama_user'),
+	    'password_user' => set_value('password_user'),
+	    'alamat_user' => set_value('alamat_user'),
 	);
-        $this->template->load('template','tbUser_form', $data);
+        $this->template->load('template','user/user_form', $data);
     }
 
     public function create_action()
@@ -65,10 +83,10 @@ class User extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'emailUser' => $this->input->post('emailUser',TRUE),
-		'namaUser' => $this->input->post('namaUser',TRUE),
-		'passwordUser' => md5($this->input->post('passwordUser',TRUE)),
-		'alamatUser' => $this->input->post('alamatUser',TRUE),
+		'email_user' => $this->input->post('email_user',TRUE),
+		'nama_user' => $this->input->post('nama_user',TRUE),
+		'password_user' => $this->input->post('password_user',TRUE),
+		'alamat_user' => $this->input->post('alamat_user',TRUE),
 	    );
 
             $this->User_model->insert($data);
@@ -85,13 +103,13 @@ class User extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('user/update_action'),
-		'idUser' => set_value('idUser', $row->idUser),
-		'emailUser' => set_value('emailUser', $row->emailUser),
-		'namaUser' => set_value('namaUser', $row->namaUser),
-		'passwordUser' => set_value('passwordUser', $row->passwordUser),
-		'alamatUser' => set_value('alamatUser', $row->alamatUser),
+		'id_user' => set_value('id_user', $row->id_user),
+		'email_user' => set_value('email_user', $row->email_user),
+		'nama_user' => set_value('nama_user', $row->nama_user),
+		'password_user' => set_value('password_user', $row->password_user),
+		'alamat_user' => set_value('alamat_user', $row->alamat_user),
 	    );
-            $this->template->load('template','tbUser_form', $data);
+            $this->template->load('template','user/user_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('user'));
@@ -103,16 +121,16 @@ class User extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('idUser', TRUE));
+            $this->update($this->input->post('id_user', TRUE));
         } else {
             $data = array(
-		'emailUser' => $this->input->post('emailUser',TRUE),
-		'namaUser' => $this->input->post('namaUser',TRUE),
-		'passwordUser' => md5($this->input->post('passwordUser',TRUE)),
-		'alamatUser' => $this->input->post('alamatUser',TRUE),
+		'email_user' => $this->input->post('email_user',TRUE),
+		'nama_user' => $this->input->post('nama_user',TRUE),
+		'password_user' => $this->input->post('password_user',TRUE),
+		'alamat_user' => $this->input->post('alamat_user',TRUE),
 	    );
 
-            $this->User_model->update($this->input->post('idUser', TRUE), $data);
+            $this->User_model->update($this->input->post('id_user', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('user'));
         }
@@ -134,12 +152,12 @@ class User extends CI_Controller
 
     public function _rules()
     {
-	$this->form_validation->set_rules('emailUser', 'emailuser', 'trim|required');
-	$this->form_validation->set_rules('namaUser', 'namauser', 'trim|required');
-	$this->form_validation->set_rules('passwordUser', 'passworduser', 'trim|required');
-	$this->form_validation->set_rules('alamatUser', 'alamatuser', 'trim|required');
+	$this->form_validation->set_rules('email_user', 'email user', 'trim|required');
+	$this->form_validation->set_rules('nama_user', 'nama user', 'trim|required');
+	$this->form_validation->set_rules('password_user', 'password user', 'trim|required');
+	$this->form_validation->set_rules('alamat_user', 'alamat user', 'trim|required');
 
-	$this->form_validation->set_rules('idUser', 'idUser', 'trim');
+	$this->form_validation->set_rules('id_user', 'id_user', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
@@ -148,5 +166,5 @@ class User extends CI_Controller
 /* End of file User.php */
 /* Location: ./application/controllers/User.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2016-05-07 21:56:56 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2016-05-09 06:40:51 */
 /* http://harviacode.com */

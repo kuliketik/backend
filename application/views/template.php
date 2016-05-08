@@ -129,22 +129,22 @@
 
                       <li class="active treeview">
                         <?php
-                        $menu = $this->db->get_where('tbMenu', array('isParent' => 0,'isActive'=>1));
+                        $menu = $this->db->get_where('menu', array('parent' => 0,'active'=>1));
                         foreach ($menu->result() as $m) {
                             // chek ada sub menu
-                            $submenu = $this->db->get_where('tbMenu',array('isParent'=>$m->idMenu,'isActive'=>1));
+                            $submenu = $this->db->get_where('menu',array('parent'=>$m->id_menu,'active'=>1));
                             if($submenu->num_rows()>0){
                                 // tampilkan submenu
                                 echo "<li class='treeview'>
-                                    ".anchor('#',  "<i class='$m->iconMenu'></i><span>".strtoupper($m->namaMenu).'</span> <i class="fa fa-angle-left pull-right"></i>')."
+                                    ".anchor('#',  "<i class='$m->icon_menu'></i><span>".strtoupper($m->nama_menu).'</span> <i class="fa fa-angle-left pull-right"></i>')."
                                         <ul class='treeview-menu'>";
                                 foreach ($submenu->result() as $s){
-                                     echo "<li>" . anchor($s->linkMenu, "<i class='$s->iconMenu'></i> <span>" . strtoupper($s->namaMenu)) . "</span></li>";
+                                     echo "<li>" . anchor($s->link_menu, "<i class='$s->icon_menu'></i> <span>" . strtoupper($s->nama_menu)) . "</span></li>";
                                 }
                                    echo"</ul>
                                     </li>";
                             }else{
-                                echo "<li>" . anchor($m->linkMenu, "<i class='$m->iconMenu'></i> <span>" . strtoupper($m->namaMenu)) . "</span></li>";
+                                echo "<li>" . anchor($m->link_menu, "<i class='$m->icon_menu'></i> <span>" . strtoupper($m->nama_menu)) . "</span></li>";
                             }
 
                         }
