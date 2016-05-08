@@ -5,8 +5,8 @@ if (!defined('BASEPATH'))
 
 class User extends CI_Controller
 {
-    
-        
+
+
     function __construct()
     {
         parent::__construct();
@@ -25,7 +25,7 @@ class User extends CI_Controller
         $this->template->load('template','tbUser_list', $data);
     }
 
-    public function read($id) 
+    public function read($id)
     {
         $row = $this->User_model->get_by_id($id);
         if ($row) {
@@ -43,7 +43,7 @@ class User extends CI_Controller
         }
     }
 
-    public function create() 
+    public function create()
     {
         $data = array(
             'button' => 'Create',
@@ -56,8 +56,8 @@ class User extends CI_Controller
 	);
         $this->template->load('template','tbUser_form', $data);
     }
-    
-    public function create_action() 
+
+    public function create_action()
     {
         $this->_rules();
 
@@ -67,7 +67,7 @@ class User extends CI_Controller
             $data = array(
 		'emailUser' => $this->input->post('emailUser',TRUE),
 		'namaUser' => $this->input->post('namaUser',TRUE),
-		'passwordUser' => $this->input->post('passwordUser',TRUE),
+		'passwordUser' => md5($this->input->post('passwordUser',TRUE)),
 		'alamatUser' => $this->input->post('alamatUser',TRUE),
 	    );
 
@@ -76,8 +76,8 @@ class User extends CI_Controller
             redirect(site_url('user'));
         }
     }
-    
-    public function update($id) 
+
+    public function update($id)
     {
         $row = $this->User_model->get_by_id($id);
 
@@ -97,8 +97,8 @@ class User extends CI_Controller
             redirect(site_url('user'));
         }
     }
-    
-    public function update_action() 
+
+    public function update_action()
     {
         $this->_rules();
 
@@ -108,7 +108,7 @@ class User extends CI_Controller
             $data = array(
 		'emailUser' => $this->input->post('emailUser',TRUE),
 		'namaUser' => $this->input->post('namaUser',TRUE),
-		'passwordUser' => $this->input->post('passwordUser',TRUE),
+		'passwordUser' => md5($this->input->post('passwordUser',TRUE)),
 		'alamatUser' => $this->input->post('alamatUser',TRUE),
 	    );
 
@@ -117,8 +117,8 @@ class User extends CI_Controller
             redirect(site_url('user'));
         }
     }
-    
-    public function delete($id) 
+
+    public function delete($id)
     {
         $row = $this->User_model->get_by_id($id);
 
@@ -132,7 +132,7 @@ class User extends CI_Controller
         }
     }
 
-    public function _rules() 
+    public function _rules()
     {
 	$this->form_validation->set_rules('emailUser', 'emailuser', 'trim|required');
 	$this->form_validation->set_rules('namaUser', 'namauser', 'trim|required');
