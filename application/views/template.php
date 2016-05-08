@@ -36,12 +36,15 @@
                 <!-- Logo -->
                 <a href="<?php echo base_url(); ?>" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><b>NULL</b>-id</span>
+                    <span class="logo-mini"><b>N</b>ull</span>
                     <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>NULL-ID</b></span>
+                    <span class="logo-lg"><b>Null</b> id</span>>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top" role="navigation">
+                  <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                  </a>
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
 
@@ -122,6 +125,9 @@
                     <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
+
+
+                      <li class="active treeview">
                         <?php
                         $menu = $this->db->get_where('tbMenu', array('isParent' => 0,'isActive'=>1));
                         foreach ($menu->result() as $m) {
@@ -130,7 +136,7 @@
                             if($submenu->num_rows()>0){
                                 // tampilkan submenu
                                 echo "<li class='treeview'>
-                                    ".anchor('#',  "<i class='$m->iconMenu'></i>".strtoupper($m->namaMenu).' <i class="fa fa-angle-left pull-right"></i>')."
+                                    ".anchor('#',  "<i class='$m->iconMenu'></i><span>".strtoupper($m->namaMenu).'</span> <i class="fa fa-angle-left pull-right"></i>')."
                                         <ul class='treeview-menu'>";
                                 foreach ($submenu->result() as $s){
                                      echo "<li>" . anchor($s->linkMenu, "<i class='$s->iconMenu'></i> <span>" . strtoupper($s->namaMenu)) . "</span></li>";
