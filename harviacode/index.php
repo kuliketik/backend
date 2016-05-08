@@ -45,7 +45,7 @@ require_once 'core/process.php';
                                         <input type="radio" name="jenis_tabel" value="reguler_table" <?php echo $jenis_tabel == 'reguler_table' ? 'checked' : ''; ?>>
                                         Reguler Table
                                     </label>
-                                </div>
+                                </div>                            
                             </div>
                             <div class="col-md-6">
                                 <div class="radio" style="margin-bottom: 0px; margin-top: 0px">
@@ -66,7 +66,7 @@ require_once 'core/process.php';
                                 Export Excel
                             </label>
                         </div>
-                    </div>
+                    </div>    
 
                     <div class="form-group">
                         <div class="checkbox">
@@ -76,7 +76,7 @@ require_once 'core/process.php';
                                 Export Word
                             </label>
                         </div>
-                    </div>
+                    </div>    
 
                     <!--                    <div class="form-group">
                                             <div class="checkbox  <?php // echo file_exists('../application/third_party/mpdf/mpdf.php') ? '' : 'disabled';   ?>">
@@ -117,7 +117,7 @@ require_once 'core/process.php';
                 <p><strong>About :</strong></p>
                 <p>
                     Codeigniter CRUD Generator is a simple tool to auto generate model, controller and view from your table. This tool will boost your
-                    writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form*, form validation, export to excel, and export to word.
+                    writing code. This CRUD generator will make a complete CRUD operation, pagination, search, form*, form validation, export to excel, and export to word. 
                     This CRUD Generator using bootstrap 3 style. You still need to modify the result code for more customization.
                 </p>
                 <small>* generate textarea and text input only</small>
