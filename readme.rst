@@ -13,7 +13,8 @@
 ## How to Install
 
 1. Buat database
-2. Ubah config CI `aplication/config/`
+2. Download mpdf v.6.0 `http://www.mpdf1.com/mpdf/index.php?page=Download`
+3. Ubah config CI `aplication/config/`
 
 a. autoload.php
 
