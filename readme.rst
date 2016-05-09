@@ -16,19 +16,23 @@
 2. Ubah config CI `aplication/config/`
 
 a. autoload.php
+
 ```
     $autoload['libraries'] = array('database','session','template');
     $autoload['helper'] = array('url','form','nuris');
 ```
 
 b. config.php
+
 ```
     $config['base_url'] = 'http://localhost/nullid-research/'; // sesuaikan
+
     $config['index_page'] = '';
     $config['url_suffix'] = '.html';
 ```
 
 c. database.php
+
 `   Sesuaikan`
 
 ## How to use
