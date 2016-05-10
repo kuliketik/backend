@@ -438,7 +438,7 @@ class Ion_auth_model extends CI_Model
 	 * Activation functions
 	 *
 	 * Activate : Validates and removes activation code.
-	 * Deactivae : Updates a users row with an activation code.
+	 * Deactivate : Updates a users row with an activation code.
 	 *
 	 * @author Mathew
 	 */
@@ -928,7 +928,7 @@ class Ion_auth_model extends CI_Model
 
 		$id = $this->db->insert_id();
 
-		// add in groups array if it doesn't exits and stop adding into default group if default group ids are set
+		// add in groups array if it doesn't exists and stop adding into default group if default group ids are set
 		if( isset($default_group->id) && empty($groups) )
 		{
 			$groups[] = $default_group->id;
@@ -1378,7 +1378,7 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('user');
 
 		// if no id was passed use the current users id
-		$id || $id = $this->session->userdata('user_id');
+		$id = isset($id) ? $id : $this->session->userdata('user_id');
 
 		$this->limit(1);
 		$this->order_by($this->tables['users'].'.id', 'desc');
@@ -1644,7 +1644,7 @@ class Ion_auth_model extends CI_Model
 		$this->db->delete($this->tables['users'], array('id' => $id));
 
 		// if user does not exist in database then it returns FALSE else removes the user from groups
-		if ($this->db->affected_rows() == 0)
+		if ($this->db->affected_rows() <= 0)
 		{
 		    return FALSE;
 		}
