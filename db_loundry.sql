@@ -139,7 +139,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'Menu','menu','glyphicon glyphicon-th-large',1,0),(4,'order','order','glyphicon glyphicon-tag',1,1),(5,'keterangan','keterangan','glyphicon glyphicon-th-list',1,1),(6,'loundry','loundry','glyphicon glyphicon-repeat',1,1),(7,'pakaian','pakaian','glyphicon glyphicon-knight',1,1),(8,'user','user','fa fa-users',1,1);
+INSERT INTO `menu` VALUES (1,'Menu','menu','glyphicon glyphicon-th-large',1,0),(4,'order','order','glyphicon glyphicon-tag',1,1),(5,'keterangan','keterangan','glyphicon glyphicon-th-list',1,1),(6,'loundry','loundry','glyphicon glyphicon-repeat',1,1),(7,'pakaian','pakaian','glyphicon glyphicon-knight',1,1),(8,'users','auth','fa fa-users',1,1);
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,33 +195,6 @@ INSERT INTO `pakaian` VALUES (1,'Kemeja'),(2,'Celana Panjang'),(3,'Celana Jeans'
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `id_user` int(11) NOT NULL AUTO_INCREMENT,
-  `email_user` varchar(50) NOT NULL,
-  `nama_user` varchar(35) NOT NULL,
-  `password_user` varchar(75) NOT NULL,
-  `alamat_user` text NOT NULL,
-  PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'gandhi@yahoo.com','gandhi','f18ed7847686171c3f3f8670cdb0291e','jl. fajar'),(2,'vicky@yahoo.com','vicky','8af433519d6e385e89bb280f8002f2b2','kos flaminggo'),(3,'hafizan@yahoo.com','hafizan','5bfa905b921290cedb39ea89ae533ce4','gobah'),(4,'benny@yahoo.com','benny','42f4b247702c99bda0fc7bcc41c70d19','panam'),(5,'jufi@yahoo.com','jufi','92af2052ecac75333b2dd010c02c6ca1','sei duku'),(6,'aldio@yahoo.com','aldio','b13845cbec419566223fd5171eed06e9','panam');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -247,7 +220,7 @@ CREATE TABLE `users` (
   `company` varchar(100) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,7 +229,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'127.0.0.1','administrator','$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36','','admin@admin.com','',NULL,NULL,'Vk7YNojOHoZzjpFfpotUv.',1268889823,1462924393,1,'Admin','istrator','ADMIN','0');
+INSERT INTO `users` VALUES (1,'127.0.0.1','administrator','$2y$08$cxcnluPEGAt/RUa.C1zLXuAAxMMtz10ioxdyXFUqtuZnX/CSmaIoK','','admin@admin.com','',NULL,NULL,'Vk7YNojOHoZzjpFfpotUv.',1268889823,1462959820,1,'Admin','istrator','ADMIN','0'),(2,'','vicky','$2y$08$UTsXIW5.52AFoDOl5xWcE.GeDrJhzoFutawm9GSF/En/2nvTyAQW6','','vicky@yahoo.com',NULL,'',0,'',0,1462959862,1,'vicky','dasta','admin','0'),(3,'','hafizan','','','hafizan@yahoo.com',NULL,'',0,'',0,0,1,'','','',''),(4,'','benny','','','benny@yahoo.com',NULL,'',0,'',0,0,1,'','','',''),(5,'','jufi','','','jufi@yahoo.com',NULL,'',0,'',0,0,1,'','','',''),(6,'','aldio','','','aldio@yahoo.com',NULL,'',0,'',0,0,1,'','','',''),(7,'','gandhi','$2y$08$p2aOxAQcU59tOLT.OjHt3.gFu2BJY2tfJNrinVw9JfWJyPhmzyqAa','','gandhi@yahoo.com',NULL,'',0,'',0,0,1,'gandhi','wibowo','admin','0');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,7 +250,7 @@ CREATE TABLE `users_groups` (
   KEY `fk_users_groups_groups1_idx` (`group_id`),
   CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +259,7 @@ CREATE TABLE `users_groups` (
 
 LOCK TABLES `users_groups` WRITE;
 /*!40000 ALTER TABLE `users_groups` DISABLE KEYS */;
-INSERT INTO `users_groups` VALUES (1,1,1),(2,1,2);
+INSERT INTO `users_groups` VALUES (3,1,1),(4,1,2),(7,2,1),(8,2,2),(9,7,1),(10,7,2);
 /*!40000 ALTER TABLE `users_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -299,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-05-11  6:56:35
+-- Dump completed on 2016-05-11 16:49:02

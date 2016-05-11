@@ -10,6 +10,9 @@ class Menu extends CI_Controller
         parent::__construct();
         $this->load->model('Menu_model');
         $this->load->library('form_validation');
+        if(!$this->ion_auth->logged_in()){
+          redirect('auth/login', 'refresh');
+        }
     }
 
     public function index()
